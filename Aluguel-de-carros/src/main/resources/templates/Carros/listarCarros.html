@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Carros</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        /* Reset geral */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Container principal */
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Título */
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Estilização da tabela */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: #007bff;
+            color: white;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Linhas alternadas para melhor visualização */
+        tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        /* Disponibilidade dos carros */
+        .disponivel {
+            color: green;
+            font-weight: bold;
+        }
+
+        .indisponivel {
+            color: red;
+            font-weight: bold;
+        }
+
+        /* Botão de aluguel */
+        .btn-alugar {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .btn-alugar:hover {
+            background-color: #0056b3;
+        }
+
+        /* Botões de navegação */
+        .btn-voltar {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .btn-voltar:hover {
+            background-color: #218838;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .btn-alugar, .btn-voltar {
+                width: 100%;
+                display: block;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Lista de Carros Disponíveis</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Assentos</th>
+            <th>Valor por Dia</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="carro : ${carros}">
+            <td th:text="${carro.id}"></td>
+            <td th:text="${carro.nome}"></td>
+            <td th:text="${carro.assentos}"></td>
+            <td th:text="${carro.valor} + ' R$'"></td>
+            <td>
+                <span th:if="${carro.status}" class="disponivel">Disponível</span>
+                <span th:if="${!carro.status}" class="indisponivel">Indisponível</span>
+            </td>
+            <td>
+                <a th:href="@{/aluguel/ui/alugar/{carroId}(carroId=${carro.id})}" class="btn-alugar">Alugar</a>
+
+                <span th:unless="${carro.status}" class="indisponivel">Indisponível</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a class="btn-voltar" th:href="@{/usuarios/cadastro}">Cadastrar Novo Usuário</a>
+</div>
+</body>
+</html>
